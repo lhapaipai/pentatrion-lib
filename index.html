@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Helvetica,Arial,sans-serif;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    code {
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pentatrion library</h1>
+  <h2>dateHelper</h2>
+  <pre>
+    <code class="language-js">
+      let dateTime = new Date();
+      dateHelper.toIsoString(dateTime);
+      // 2021-04-12
+      dateHelper.toIsoString(dateTime, true);
+      // 2021-04-12T11-40
+    </code>
+  </pre>
+
+  <h2>downloadHelper</h2>
+  <pre>
+    <code class="language-js">
+      downloadHelper.stringToSlug("Salut les élèves !");
+      // salut-les-eleves-
+  
+      downloadHelper.downloadFromUrl('/alterosac-sac.svg', 'alterosac-sac.svg');
+      // ok
+      // attention aux problèmes de cors si la requête est effectuée vers un autre domaine
+    </code>
+  </pre>
+  <button id="download-url">Download from url</button>
+
+  <h2>apiHelper</h2>
+
+  <p>
+    <button id="form-fetch">formFetch</button>
+    <button id="json-fetch">jsonFetch</button>
+    <button id="json-fetch-or-notify">jsonFetchOrNotify</button>
+    <button id="raw-fetch">jsonFetch retourne contenu text brut</button>
+  </p>
+
+
+
+
+  <script type="module">
+    import { dateHelper, downloadHelper, apiHelper } from "./src/index.js";
+
+    import hljs from "highlight.js";
+    import 'highlight.js/styles/github.css';
+
+    import { notify } from "mini-notifier";
+    import 'mini-notifier/dist/style.css';
+
+    hljs.highlightAll();
+
+    // dateHelper
+    console.log(dateHelper.toIsoString(new Date()));
+    console.log(dateHelper.toIsoString(new Date(), true));
+
+    // downloadHelper
+    console.log(downloadHelper.stringToSlug("Salut les élèves !"));
+    document.querySelector('#download-url').addEventListener('click', () => {
+      downloadHelper.downloadFromUrl('/examples/sac.svg', 'sac.svg');
+    });
+
+    // apiHelper
+    document.querySelector('#form-fetch').addEventListener('click', () => {
+      apiHelper.formFetch('http://application-test.local/lib-api/form-fetch?XDEBUG_SESSION_START=1', {
+        body: {
+          foo: 'bar',
+          cities: {
+            paris: true,
+            annemasse: {
+              beautiful: false
+            }
+          }
+        }
+      })
+        .then(data => {
+          console.log(data);
+        })
+    });
+    document.querySelector('#json-fetch').addEventListener('click', () => {
+      apiHelper.jsonFetch('http://application-test.local/lib-api/json-fetch?XDEBUG_SESSION_START=1', {
+        body: {
+          foo: 'bar'
+        }
+      }, true)
+        .then(data => {
+          console.log(data);
+        })
+    });
+
+    document.querySelector('#json-fetch-or-notify').addEventListener('click', () => {
+      apiHelper.jsonFetchOrNotify('http://application-test.local/lib-api/json-fetch-or-notify?XDEBUG_SESSION_START=1', {
+        body: {
+          foo: 'bar'
+        }
+      }, true)
+        .then(data => {
+          console.log(data);
+        })
+    });
+
+    document.querySelector('#raw-fetch').addEventListener('click', () => {
+      apiHelper.jsonFetchOrNotify('http://application-test.local/lib-api/raw-fetch?XDEBUG_SESSION_START=1', {
+        body: {}
+      })
+        .then(data => {
+          console.log(data);
+        })
+    });    
+
+
+  </script>
+</body>
+</html>
