@@ -2,9 +2,11 @@
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
   "version": "0.1.2",
+  "main": "dist/pentatrion-lib.umd.js",
   "module": "src/index.js",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "dev": "vite",
