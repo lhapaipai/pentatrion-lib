@@ -17,7 +17,6 @@
     "vite": "^2.1.5"
   },
   "dependencies": {
-    "highlight.js": "^10.7.2",
     "mini-notifier": "^0.2.0"
   },
   "repository": {
