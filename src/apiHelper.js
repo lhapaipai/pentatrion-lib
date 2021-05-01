@@ -1,96 +1,102 @@
-import { notify } from 'mini-notifier';
+import { notify } from "mini-notifier";
 
-export async function jsonFetchOrNotify(url, params = {}, xRequestedWith = false) {
+export async function jsonFetchOrNotify(
+  url,
+  params = {},
+  xRequestedWith = false
+) {
   try {
-    return await jsonFetch(url, params, xRequestedWith)
+    return await jsonFetch(url, params, xRequestedWith);
   } catch (err) {
     if (err instanceof ApiError) {
       notify(err.title, {
-        style: 'error',
-        time: 500000
+        style: "error",
+        time: 500000,
       });
     } else {
       notify(err, {
-        style: 'error',
-        time: 500000
+        style: "error",
+        time: 500000,
       });
     }
     throw err;
   }
 }
 
-export async function formFetchOrNotify(url, params = {}, xRequestedWith = false) {
+export async function formFetchOrNotify(
+  url,
+  params = {},
+  xRequestedWith = false
+) {
   try {
-    return await formFetch(url, params, xRequestedWith)
+    return await formFetch(url, params, xRequestedWith);
   } catch (err) {
     if (err instanceof ApiError) {
       notify(err.title, {
-        style: 'error',
-        time: 500000
+        style: "error",
+        time: 500000,
       });
     } else {
       notify(err, {
-        style: 'error',
-        time: 500000
+        style: "error",
+        time: 500000,
       });
     }
     throw err;
   }
 }
 
-
-
-export function jsonFetch (url, params =  {}, xRequestedWith = false) {
-  if (!params.body) {
-    throw new ApiError('No content to fetch', 500);
-  }
+export function jsonFetch(url, params = {}, xRequestedWith = false) {
+  // if (!params.body) {
+  //   throw new ApiError("No content to fetch", 500);
+  // }
 
   if (params.body instanceof FormData) {
-    params.body = form2obj(params.body)
+    params.body = form2obj(params.body);
   }
 
-  if (typeof params.body === 'object') {
-    params.body = JSON.stringify(params.body)
+  if (typeof params.body === "object") {
+    params.body = JSON.stringify(params.body);
   }
 
   let headers = new Headers({
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    "Content-Type": "application/json",
+    Accept: "application/json",
   });
 
   if (xRequestedWith) {
-    headers.append('X-Requested-With', 'XMLHttpRequest');
+    headers.append("X-Requested-With", "XMLHttpRequest");
   }
   params = {
-    headers, 
-    method: 'POST',
-    ...params
-  }
+    headers,
+    method: "POST",
+    ...params,
+  };
 
   return customFetch(url, params);
 }
 
 export function formFetch(url, params = {}, xRequestedWith = false) {
-  if (!params.body) {
-    throw new ApiError('No content to fetch', 500);
-  }
+  // if (!params.body) {
+  //   throw new ApiError('No content to fetch', 500);
+  // }
 
-  if (typeof params.body === 'object') {
-    params.body = obj2form(params.body)
+  if (typeof params.body === "object") {
+    params.body = obj2form(params.body);
   }
 
   let headers = new Headers({
-    'Accept': 'application/json',
+    Accept: "application/json",
   });
 
   if (xRequestedWith) {
-    headers.append('X-Requested-With', 'XMLHttpRequest');
+    headers.append("X-Requested-With", "XMLHttpRequest");
   }
   params = {
-    headers, 
-    method: 'POST',
-    ...params
-  }
+    headers,
+    method: "POST",
+    ...params,
+  };
 
   return customFetch(url, params);
 }
@@ -117,13 +123,16 @@ async function customFetch(url, params = {}) {
     }
   } catch (e) {
     // erreur de type CORS (401 non autorisé)
-    throw new ApiError('Erreur serveur.', 401);
+    throw new ApiError("Erreur serveur.", 401);
   }
 
-  if (res.headers.has('Content-Type') && res.headers.get('Content-Type') !== 'application/json') {
+  if (
+    res.headers.has("Content-Type") &&
+    res.headers.get("Content-Type") !== "application/json"
+  ) {
     if (!res.ok) {
       // le serveur a renvoyé une erreur mais pas présentée sous form json
-      throw new ApiError('Erreur serveur.', 500);
+      throw new ApiError("Erreur serveur.", 500);
     }
     return res;
   }
@@ -131,12 +140,12 @@ async function customFetch(url, params = {}) {
   try {
     data = await res.json();
   } catch (e) {
-    throw new ApiError('Le contenu renvoyé est illisible.', 500);
+    throw new ApiError("Le contenu renvoyé est illisible.", 500);
   }
-  
+
   // le serveur a renvoyé une erreur mais présentée en json avec un message lisible.
   if (!res.ok) {
-    let title = data.err || data.title || data.detail || 'Erreur serveur';
+    let title = data.err || data.title || data.detail || "Erreur serveur";
     throw new ApiError(title, res.status);
   }
 
@@ -144,9 +153,8 @@ async function customFetch(url, params = {}) {
 }
 
 export class ApiError {
-  constructor (title, status = 500) {
+  constructor(title, status = 500) {
     this.title = title;
     this.status = status;
   }
 }
-
