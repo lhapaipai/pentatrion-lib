@@ -1,9 +1,11 @@
 {
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "module": "src/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build"
