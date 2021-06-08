@@ -45,6 +45,7 @@ downloadHelper.downloadFromUrl("/sav.svg", "sac.svg");
 - formFetch
 - jsonFetchOrNotify
 - formFetchOrNotify
+- fetchOrNotify
 - ApiError
 
 ```js

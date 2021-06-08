@@ -11,12 +11,12 @@ export async function jsonFetchOrNotify(
     if (err instanceof ApiError) {
       notify(err.title, {
         style: "error",
-        time: 500000,
+        time: 5000,
       });
     } else {
       notify(err, {
         style: "error",
-        time: 500000,
+        time: 5000,
       });
     }
     throw err;
@@ -34,12 +34,44 @@ export async function formFetchOrNotify(
     if (err instanceof ApiError) {
       notify(err.title, {
         style: "error",
-        time: 500000,
+        time: 5000,
       });
     } else {
       notify(err, {
         style: "error",
-        time: 500000,
+        time: 5000,
+      });
+    }
+    throw err;
+  }
+}
+
+export async function fetchOrNotify(url, params = {}, xRequestedWith = false) {
+  try {
+    let headers = new Headers({
+      Accept: "application/json",
+    });
+
+    if (xRequestedWith) {
+      headers.append("X-Requested-With", "XMLHttpRequest");
+    }
+    params = {
+      headers,
+      method: "GET",
+      ...params,
+    };
+
+    return await customFetch(url, params);
+  } catch (err) {
+    if (err instanceof ApiError) {
+      notify(err.title, {
+        style: "error",
+        time: 5000,
+      });
+    } else {
+      notify(err, {
+        style: "error",
+        time: 5000,
       });
     }
     throw err;
@@ -104,7 +136,13 @@ export function formFetch(url, params = {}, xRequestedWith = false) {
 function obj2form(obj) {
   const form = new FormData();
   for (let key in obj) {
-    form.append(key, obj[key]);
+    if (obj[key] instanceof Array) {
+      for (let val of obj[key]) {
+        form.append(`${key}[]`, val);
+      }
+    } else {
+      form.append(key, obj[key]);
+    }
   }
   return form;
 }
