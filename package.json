@@ -1,7 +1,7 @@
 {
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/pentatrion-lib.umd.js",
   "module": "src/index.js",
   "files": [
