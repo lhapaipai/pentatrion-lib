@@ -2,20 +2,8 @@
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
   "version": "0.1.5",
-  "main": "dist/pentatrion-lib.umd.js",
-  "module": "src/index.js",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build"
-  },
+  "main": "index.js",
   "author": "Lhapaipai",
-  "devDependencies": {
-    "vite": "^2.1.5"
-  },
   "dependencies": {
     "mini-notifier": "^0.2.0"
   },

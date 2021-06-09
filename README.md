@@ -1,52 +1,64 @@
-# TODO
-
-jsonFetch/formFetch sans body est-ce gênant ?
+# Pentatrion-Lib
 
 Fonctions que j'utilise pour mes projets. Pourquoi ne pas les rendre publiques ?
 
-# Importation
+## Animator
 
-```js
-import { downloadHelper, dateHelper, apiHelper } from "pentatrion-lib";
+on applique Animator sur un élément masqué avec display: none. afin de lui appliquer une transition à la vue
+
+```html
+<nav id="nav" class="hide" data-transition-name="navbar">...</nav>
 ```
 
-# Description
+```css
+.hide {
+  display: none !important;
+}
 
-## dateHelper
+.navbar-enter-active,
+.navbar-leave-active {
+  transition: all 0.5s ease;
+}
 
-- toIsoString
-
-```js
-let dateTime = new Date();
-dateHelper.toIsoString(dateTime);
-// 2021-04-12
-dateHelper.toIsoString(dateTime, true);
-// 2021-04-12T11-40
+.navbar-enter,
+.navbar-leave-to {
+  opacity: 0;
+}
 ```
 
-## downloadHelper
-
-- downloadFromBlob
-- downloadFromUrl
-- stringToSlug
+```
+       .navbar-enter-active ---------  | .navbar-leave-active ---------
+       .navbar-enter .navbar-enter-to  | .navbar-leave .navbar-leave-to
+.hide-----                             |                          .hide----
+```
 
 ```js
-downloadHelper.stringToSlug("Salut les élèves !");
-// salut-les-eleves-
+import Animator from "pentatrion-lib/Animator";
 
-downloadHelper.downloadFromUrl("/sav.svg", "sac.svg");
-// ok
-// attention aux problèmes de cors si la requête est effectuée vers un autre domaine
+let animator = new Animator({
+  inactiveClass: "hide",
+  // can be surcharged with "data-transition-name"
+  transitionName: "transition",
+});
+
+animator.animEnter(elt);
+animator.animLeave(elt);
 ```
 
 ## apiHelper
 
-- jsonFetch
-- formFetch
-- jsonFetchOrNotify
-- formFetchOrNotify
-- fetchOrNotify
-- ApiError
+```js
+import {
+  jsonFetch,
+  formFetch,
+  ApiError,
+
+  // dépendent de mini-notifier
+  jsonFetchOrNotify,
+  formFetchOrNotify,
+  fetchOrNotify,
+} from "pentatrion-lib/apiHelper";
+```
 
 ```js
 formFetch(
@@ -86,44 +98,92 @@ Si la requête échoue (status non compris entre 200 et 299) soulève une Except
 let title = data.err || data.title || data.detail || "Erreur serveur";
 ```
 
-## Animator
-
-on applique Animator sur un élément masqué avec display: none. afin de lui appliquer une transition à la vue
-
-```html
-<nav id="nav" class="hide" data-transition-name="navbar">...</nav>
-```
-
-```css
-.hide {
-  display: none !important;
-}
-
-.navbar-enter-active,
-.navbar-leave-active {
-  transition: all 0.5s ease;
-}
-
-.navbar-enter,
-.navbar-leave-to {
-  opacity: 0;
-}
-```
-
-```
-       .navbar-enter-active ---------  | .navbar-leave-active ---------
-       .navbar-enter .navbar-enter-to  | .navbar-leave .navbar-leave-to
-.hide-----                             |                          .hide----
-```
+## dateHelper
 
 ```js
-import { Animator } from "pentatrion-lib";
-let animator = new Animator({
-  inactiveClass: "hide",
-  // can be surcharged with "data-transition-name"
-  transitionName: "transition",
-});
+import { toIsoString, ago } from "pentatrion-lib/dateHelper";
 
-animator.animEnter(elt);
-animator.animLeave(elt);
+let dateTime = new Date();
+toIsoString(dateTime);
+// 2021-04-12
+toIsoString(dateTime, true);
+// 2021-04-12T11-40
+
+ago(from, to);
+// "il y a 3 jours"
+```
+
+## downloadHelper
+
+```js
+import {
+  downloadFromBlob,
+  downloadFromUrl,
+  stringToSlug,
+} from "pentatrion-lib/downloadHelper";
+
+stringToSlug("Salut les élèves !");
+// salut-les-eleves-
+
+downloadFromUrl("/sav.svg", "sac.svg");
+// ok
+// attention aux problèmes de cors si la requête est effectuée vers un autre domaine
+```
+
+## emitEvent
+
+```js
+import emitEvent from "pentatrion-lib/emitEvent";
+
+emitEvent(
+  "mon-custom-event",
+  {
+    foo: "bar",
+  },
+  document.querySelector("#el")
+);
+```
+
+## EventEmitter
+
+```js
+import EventEmitter from "pentatrion-lib/EventEmitter";
+
+class MaClasse extends EventEmitter {
+  constructor() {
+    this.on("finish", this.cb);
+    // ou
+    this.once("finish", this.cb);
+  }
+
+  cb(arg1, arg2) {
+    console.log(arg1, arg2);
+    // "a", "b"
+  }
+
+  autre() {
+    this.emitEvent("finish", ["a", "b"]);
+  }
+
+  destroy() {
+    this.off("finish", this.cb);
+    // ou
+    this.allOff();
+  }
+}
+```
+
+## functionHelper
+
+```js
+import { debounceMethod, throttleMethod } from "pentatrion-lib/functionHelper";
+```
+
+## supportHelper
+
+```js
+import { supportsCssVars } from "pentatrion-lib/supportHelper";
+if (supportsCssVars()) {
+  // TODO
+}
 ```
