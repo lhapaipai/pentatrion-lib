@@ -9,7 +9,7 @@ export function supportsCssVars() {
       window.CSS.supports &&
       window.CSS.supports("font-weight", "var(--tmp-var)")
     )),
-    t.parentNode.removeChild(t),
+    t.parentNode?.removeChild(t),
     e
   );
 }

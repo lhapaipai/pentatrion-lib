@@ -4,13 +4,19 @@
  * MIT License
  */
 
+type Listener = (...args: any[]) => void;
+type EventsListeners = {
+  [k: string]: Listener[];
+};
+type OnceListeners = {};
+
 class EventEmitter {
-  on(eventName, listener) {
-    if (!eventName || !listener) {
-      return;
-    }
+  private events: EventsListeners = {};
+  private onceEvents: EventsListeners = {};
+
+  on(eventName: string, listener: Listener) {
     // set events hash
-    var events = (this._events = this._events || {});
+    var events = (this.events = this.events || {});
     // set listeners array
     var listeners = (events[eventName] = events[eventName] || []);
     // only add once
@@ -21,7 +27,7 @@ class EventEmitter {
     return this;
   }
 
-  once(eventName, listener) {
+  once(eventName: string, listener: Listener) {
     if (!eventName || !listener) {
       return;
     }
@@ -29,17 +35,19 @@ class EventEmitter {
     this.on(eventName, listener);
     // set once flag
     // set onceEvents hash
-    var onceEvents = (this._onceEvents = this._onceEvents || {});
+    var onceEvents = (this.onceEvents = this.onceEvents || {});
     // set onceListeners object
-    var onceListeners = (onceEvents[eventName] = onceEvents[eventName] || {});
+    var onceListeners = (onceEvents[eventName] = onceEvents[eventName] || []);
     // set flag
-    onceListeners[listener] = true;
+    if (onceListeners.indexOf(listener) == -1) {
+      onceListeners.push(listener);
+    }
 
     return this;
   }
 
-  off(eventName, listener) {
-    var listeners = this._events && this._events[eventName];
+  off(eventName: string, listener: Listener) {
+    var listeners = this.events && this.events[eventName];
     if (!listeners || !listeners.length) {
       return;
     }
@@ -51,8 +59,8 @@ class EventEmitter {
     return this;
   }
 
-  emitEvent(eventName, args) {
-    var listeners = this._events && this._events[eventName];
+  emitEvent(eventName: string, args: any[]) {
+    var listeners = this.events && this.events[eventName];
     if (!listeners || !listeners.length) {
       return;
     }
@@ -60,17 +68,17 @@ class EventEmitter {
     listeners = listeners.slice(0);
     args = args || [];
     // once stuff
-    var onceListeners = this._onceEvents && this._onceEvents[eventName];
+    var onceListeners = this.onceEvents && this.onceEvents[eventName];
 
     for (var i = 0; i < listeners.length; i++) {
       var listener = listeners[i];
-      var isOnce = onceListeners && onceListeners[listener];
-      if (isOnce) {
+      var onceIndex = onceListeners.indexOf(listener);
+      if (onceIndex !== -1) {
         // remove listener
         // remove before trigger to prevent recursion
         this.off(eventName, listener);
         // unset once flag
-        delete onceListeners[listener];
+        onceListeners.splice(onceIndex, 1);
       }
       // trigger listener
       listener.apply(this, args);
@@ -80,8 +88,8 @@ class EventEmitter {
   }
 
   allOff() {
-    delete this._events;
-    delete this._onceEvents;
+    this.events = {};
+    this.onceEvents = {};
   }
 }
 

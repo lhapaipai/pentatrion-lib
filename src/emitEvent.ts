@@ -1,4 +1,4 @@
-export default function emitEvent(type, detail = {}, elem = document) {
+export default function emitEvent(type: string, detail = {}, elem = document) {
   if (!type) return;
 
   let event = new CustomEvent(type, {

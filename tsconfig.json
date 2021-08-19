@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "lib": ["ES2015", "DOM"],
+    "lib": ["ES2019", "DOM", "DOM.Iterable"],
     "module": "ES2015",
     "moduleResolution": "node",
     "outDir": "dist",
     "esModuleInterop": true,
     "target": "ES2018",
-    "allowJs": true
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "sourceMap": true
   },
-  "include": ["src"]
+  "include": ["./src/**/*.ts"]
 }

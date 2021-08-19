@@ -1,11 +1,11 @@
-function pad(number) {
+function pad(number: number) {
   if (number < 10) {
     return "0" + number;
   }
   return number;
 }
 
-export function toIsoString(datetime, complete = false) {
+export function toIsoString(datetime: Date, complete = false) {
   let dateStr =
     datetime.getUTCFullYear() +
     "-" +
@@ -24,15 +24,13 @@ export function toIsoString(datetime, complete = false) {
   );
 }
 
-export function ago(ptime, ctime) {
-  if (!ptime) return "";
-
+export function ago(ptime: Date, ctime?: Date) {
   if (!ctime) {
     ctime = new Date();
   }
 
   let ntime = new Date(ptime),
-    seconds = Math.floor((ctime - ntime) / 1000),
+    seconds = Math.floor((ctime.getTime() - ntime.getTime()) / 1000),
     intervals = [
       Math.floor(seconds / 31536000),
       Math.floor(seconds / 2592000),

@@ -1,12 +1,23 @@
 export default class Animator {
+  public static defaultOptions = {
+    inactiveClass: "hide",
+    transitionName: "transition",
+  };
+  private animation: {
+    [k: string]: {
+      action: string;
+      cb: () => void;
+    };
+  } = {};
+  private options: typeof Animator.defaultOptions;
+
   constructor(options = {}) {
-    this.animation = {};
     this.options = Object.assign({}, Animator.defaultOptions, options);
   }
 
-  beforeAnimation(item) {
+  beforeAnimation(item: HTMLElement) {
     if (!item.dataset.animatorId) {
-      item.dataset.animatorId = Math.floor(Math.random() * 999999);
+      item.dataset.animatorId = Math.floor(Math.random() * 999999).toString();
     }
     let id = item.dataset.animatorId;
     if (this.animation[id]) {
@@ -19,10 +30,13 @@ export default class Animator {
     return true;
   }
 
-  animEnter(item) {
+  animEnter(item: HTMLElement) {
     this.beforeAnimation(item);
-    let transitionName;
+    let transitionName: string;
     let id = item.dataset.animatorId;
+    if (!id) {
+      return;
+    }
 
     if (item.dataset.transitionName) {
       transitionName = item.dataset.transitionName;
@@ -39,7 +53,7 @@ export default class Animator {
       item.classList.remove(`${transitionName}-enter-to`);
       item.classList.remove(`${transitionName}-enter-active`);
       item.removeEventListener("transitionend", end);
-      delete this.animation[id];
+      delete this.animation[id!];
 
       console.log("remove listener transitionend", item);
       console.log("fin animEnter", id);
@@ -50,17 +64,20 @@ export default class Animator {
       item.classList.remove(`${transitionName}-enter`);
       item.classList.add(`${transitionName}-enter-to`);
       console.log("add listener transitionend", item.className);
-      this.animation[id] = {
+      this.animation[id!] = {
         action: "enter",
         cb: end,
       };
     }, 10);
   }
 
-  animLeave(item) {
+  animLeave(item: HTMLElement) {
     this.beforeAnimation(item);
-    let transitionName;
+    let transitionName: string;
     let id = item.dataset.animatorId;
+    if (!id) {
+      return;
+    }
 
     if (item.dataset.transitionName) {
       transitionName = item.dataset.transitionName;
@@ -77,7 +94,7 @@ export default class Animator {
       item.classList.remove(`${transitionName}-leave-to`);
       item.classList.remove(`${transitionName}-leave-active`);
       item.removeEventListener("transitionend", end);
-      delete this.animation[id];
+      delete this.animation[id!];
       // console.log("fin animLeave", id);
     };
 
@@ -86,15 +103,10 @@ export default class Animator {
       item.classList.remove(`${transitionName}-leave`);
       item.classList.add(`${transitionName}-leave-to`);
 
-      this.animation[id] = {
+      this.animation[id!] = {
         action: "leave",
         cb: end,
       };
     }, 10);
   }
 }
-
-Animator.defaultOptions = {
-  inactiveClass: "hide",
-  transitionName: "transition",
-};

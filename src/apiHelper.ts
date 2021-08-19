@@ -1,8 +1,8 @@
 import { notify } from "mini-notifier";
 
 export async function jsonFetchOrNotify(
-  url,
-  params = {},
+  url: string,
+  params: RequestInit = {},
   xRequestedWith = false
 ) {
   try {
@@ -24,8 +24,8 @@ export async function jsonFetchOrNotify(
 }
 
 export async function formFetchOrNotify(
-  url,
-  params = {},
+  url: string,
+  params: RequestInit = {},
   xRequestedWith = false
 ) {
   try {
@@ -46,7 +46,11 @@ export async function formFetchOrNotify(
   }
 }
 
-export async function fetchOrNotify(url, params = {}, xRequestedWith = false) {
+export async function fetchOrNotify(
+  url: string,
+  params: RequestInit = {},
+  xRequestedWith = false
+) {
   try {
     let headers = new Headers({
       Accept: "application/json",
@@ -78,15 +82,14 @@ export async function fetchOrNotify(url, params = {}, xRequestedWith = false) {
   }
 }
 
-export function jsonFetch(url, params = {}, xRequestedWith = false) {
-  // if (!params.body) {
-  //   throw new ApiError("No content to fetch", 500);
-  // }
-
+export function jsonFetch(
+  url: string,
+  params: RequestInit = {},
+  xRequestedWith = false
+) {
   if (params.body instanceof FormData) {
-    params.body = form2obj(params.body);
+    params.body = JSON.stringify(form2obj(params.body));
   }
-
   if (typeof params.body === "object") {
     params.body = JSON.stringify(params.body);
   }
@@ -108,12 +111,16 @@ export function jsonFetch(url, params = {}, xRequestedWith = false) {
   return customFetch(url, params);
 }
 
-export function formFetch(url, params = {}, xRequestedWith = false) {
+export function formFetch(
+  url: string,
+  params: RequestInit = {},
+  xRequestedWith = false
+) {
   // if (!params.body) {
   //   throw new ApiError('No content to fetch', 500);
   // }
 
-  if (typeof params.body === "object") {
+  if (params.body && typeof params.body === "object") {
     params.body = obj2form(params.body);
   }
 
@@ -133,7 +140,7 @@ export function formFetch(url, params = {}, xRequestedWith = false) {
   return customFetch(url, params);
 }
 
-function obj2form(obj) {
+function obj2form(obj: { [k: string]: any }) {
   const form = new FormData();
   for (let key in obj) {
     if (obj[key] instanceof Array) {
@@ -147,11 +154,11 @@ function obj2form(obj) {
   return form;
 }
 
-function form2obj(form) {
-  return Object.fromEntries(form);
+function form2obj(form: FormData) {
+  return Object.fromEntries(form.entries());
 }
 
-async function customFetch(url, params = {}) {
+async function customFetch(url: string, params: RequestInit = {}) {
   let res, data;
 
   try {
@@ -191,8 +198,5 @@ async function customFetch(url, params = {}) {
 }
 
 export class ApiError {
-  constructor(title, status = 500) {
-    this.title = title;
-    this.status = status;
-  }
+  constructor(public title: string, public status = 500) {}
 }
