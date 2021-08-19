@@ -3,6 +3,7 @@
   "description": "Des fonctions utiles pour vos projets",
   "version": "0.2.1",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Lhapaipai",
   "dependencies": {
     "mini-notifier": "^0.2.0"
