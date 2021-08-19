@@ -58,3 +58,8 @@ export function ago(ptime, ctime) {
   }
   return "il y a quelques secondes";
 }
+
+export default {
+  toIsoString,
+  ago,
+};

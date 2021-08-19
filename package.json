@@ -2,7 +2,7 @@
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
   "version": "0.2.1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "Lhapaipai",
   "dependencies": {
     "mini-notifier": "^0.2.0"
@@ -10,5 +10,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lhapaipai/pentatrion-lib.git"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
   }
 }
