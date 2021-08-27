@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
   "version": "0.3.1",
@@ -6,21 +7,22 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Lhapaipai",
-  "dependencies": {
-    "mini-notifier": "^0.2.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lhapaipai/pentatrion-lib.git"
   },
   "scripts": {
     "dev": "tsc -d --watch",
-    "build": "rm -rf ./dist/ && tsc -d"
+    "build": "rm -rf ./dist/ && tsc -d && node tasks/prepare-package.js"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
+    "fs-extra": "^10.0.0",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "mini-notifier": "^0.4.0"
   }
 }
