@@ -1,7 +1,7 @@
 {
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
