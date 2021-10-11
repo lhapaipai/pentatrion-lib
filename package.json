@@ -23,6 +23,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "mini-notifier": "^0.4.0"
+    "mini-notifier": "^0.4.2"
   }
 }

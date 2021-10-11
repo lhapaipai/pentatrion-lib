@@ -1,6 +1,10 @@
 export type Newable<T> = {
   new (...args: any[]): T;
 };
+// https://css-tricks.com/debouncing-throttling-explained-examples/
+// un appel lance un minuteur si au delà du délai il n'y a pas eu de nouvel
+// appel alors lance la fonction, si un nouvel appel à lieu il remet à 
+// 0 le minuteur (on écrit un mot dans le moteur de recherche)
 
 export function debounceMethod(
   _class: Newable<{

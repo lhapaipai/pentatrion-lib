@@ -19,7 +19,6 @@ export async function jsonFetchOrNotify(
         time: 5000,
       });
     }
-    throw err;
   }
 }
 
@@ -42,7 +41,6 @@ export async function formFetchOrNotify(
         time: 5000,
       });
     }
-    throw err;
   }
 }
 
@@ -78,7 +76,6 @@ export async function fetchOrNotify(
         time: 5000,
       });
     }
-    throw err;
   }
 }
 
@@ -198,5 +195,5 @@ async function customFetch(url: string, params: RequestInit = {}) {
 }
 
 export class ApiError {
-  constructor(public title: string, public status = 500) {}
+  constructor(public title: string, public status = 500) { }
 }
