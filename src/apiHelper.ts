@@ -13,12 +13,13 @@ export async function jsonFetchOrNotify(
         style: "error",
         time: 5000,
       });
-    } else {
+    } else if (typeof err === "string") {
       notify(err, {
         style: "error",
         time: 5000,
       });
     }
+    throw err;
   }
 }
 
@@ -35,12 +36,13 @@ export async function formFetchOrNotify(
         style: "error",
         time: 5000,
       });
-    } else {
+    } else if (typeof err === "string") {
       notify(err, {
         style: "error",
         time: 5000,
       });
     }
+    throw err;
   }
 }
 
@@ -70,12 +72,13 @@ export async function fetchOrNotify(
         style: "error",
         time: 5000,
       });
-    } else {
+    } else if (typeof err === "string") {
       notify(err, {
         style: "error",
         time: 5000,
       });
     }
+    throw err;
   }
 }
 
@@ -113,9 +116,6 @@ export function formFetch(
   params: RequestInit = {},
   xRequestedWith = false
 ) {
-  // if (!params.body) {
-  //   throw new ApiError('No content to fetch', 500);
-  // }
 
   if (params.body && typeof params.body === "object") {
     params.body = obj2form(params.body);
