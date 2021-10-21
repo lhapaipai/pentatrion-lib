@@ -1,7 +1,7 @@
 # Pentatrion-Lib
 
 Fonctions que j'utilise pour mes projets. Pourquoi ne pas les rendre publiques ?
-
+J'ai désactivé la création des sourcemap car ils pointaient vers des fichier `.ts` inexistant.  
 ## Animator
 
 on applique Animator sur un élément masqué avec display: none. afin de lui appliquer une transition à la vue
