@@ -32,7 +32,7 @@ export function debounceMethod(
   };
 }
 
-// appel la fonction une première fois puis malgré le fait que la fonction
+// appele la fonction une première fois puis malgré le fait que la fonction
 // puisse être appelée plein de fois le nouvel appel ne pourra avoir lieu
 // qu'après la durée du seuil.
 

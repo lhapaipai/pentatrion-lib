@@ -117,7 +117,7 @@ export function formFetch(
   xRequestedWith = false
 ) {
 
-  if (params.body && typeof params.body === "object") {
+  if (params.body && typeof params.body === "object" && !(params.body instanceof FormData) ) {
     params.body = obj2form(params.body);
   }
 
