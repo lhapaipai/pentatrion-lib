@@ -142,10 +142,14 @@ function obj2form(obj: { [k: string]: any }) {
   for (let key in obj) {
     if (obj[key] instanceof Array) {
       for (let val of obj[key]) {
-        form.append(`${key}[]`, val);
+        if (val !== null) {
+          form.append(`${key}[]`, val);
+        }
       }
     } else {
-      form.append(key, obj[key]);
+      if (obj[key] !== null) {
+        form.append(key, obj[key]);
+      }
     }
   }
   return form;
