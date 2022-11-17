@@ -2,7 +2,7 @@
   "private": true,
   "name": "pentatrion-lib",
   "description": "Des fonctions utiles pour vos projets",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
